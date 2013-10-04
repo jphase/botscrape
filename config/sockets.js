@@ -44,7 +44,7 @@ module.exports.sockets = {
   //
   // The data store where socket.io will store its message queue 
   // and answer pubsub logic
-  adapter: 'memory',
+  // adapter: 'memory',
   //
   // To enable a remote redis pubsub server: 
   adapter: 'redis',

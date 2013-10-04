@@ -5,17 +5,22 @@
  * @description	:: Contains logic for handling requests.
  */
 
-module.exports = {
+var MembersController = {
 
   job: function(req, res) {
+
     Members.subscribe(req.socket);
-  	Members.find().done(function(err, members){
+
+		Members.find().done(function(err, members){
 	    if (err) { throw err; }
 	    sails.log.debug(members);
 			Members.publish(req.socket, members);
 			res.send(members);
   	});
-    res.view();
+
+		res.send("de nada");
   }
 
 };
+
+module.exports = MembersController;
