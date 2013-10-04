@@ -18,8 +18,7 @@ var SailsCollection = Backbone.Collection.extend({
 		  this.socket.request("/" + this.sailsCollection, where, _.bind(function(users){
 		    this.set(users);
 		  }, this));
-
-                        this.socket.on("message", _.bind(function(msg){
+			this.socket.on("message", _.bind(function(msg){
 			  console.log(msg);
 			  var m = msg.verb;
 			  console.log(m);
@@ -34,7 +33,7 @@ var SailsCollection = Backbone.Collection.extend({
 		    }, this));
 		  }, this));
 		} else {
-                  console.log("Error: Cannot retrieve models because property 'sailsCollection' not set on collection");
+				console.log("Error: Cannot retrieve models because property 'sailsCollection' not set on collection");
 		}
 	}
 });
@@ -43,3 +42,7 @@ var MembersCollection = SailsCollection.extend({
 	sailsCollection: 'members',
 	model: MembersModel
 });
+
+var members = new MembersCollection();
+
+members.fetch();
