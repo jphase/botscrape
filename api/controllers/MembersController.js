@@ -18,7 +18,7 @@ var MembersController = {
 			res.send(members);
   	});
 
-		res.send("de nada");
+		res.view();
   }
 
 };
