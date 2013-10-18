@@ -9,12 +9,9 @@
 module.exports = {
 
 	schema: true,
-  attributes: {
-
-
-  	name: 'STRING',
-  	email: 'STRING'
-
-  }
+	attributes: {
+		name: 'STRING',
+		email: 'STRING'
+	}
 
 };

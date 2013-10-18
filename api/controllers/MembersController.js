@@ -7,19 +7,27 @@
 
 var MembersController = {
 
-  job: function(req, res) {
+	job: function(req, res) {
+		// Members.subscribe(req.socket);
+		// var something;
+		// // Find members with id passed
+		// Members.find()
+		// .where({ id: req.param('id') })
+		// .done(function(err, members) {
+		// 	if(err) { throw err; }
+		// 	sails.log.debug(members);
+		// 	Members.publish(req.socket, members);
+		// 	// res.send(members);
+		// });
 
-    Members.subscribe(req.socket);
+setTimeout(function() {
+  console.log('world');
+}, 100);
 
-		Members.find().done(function(err, members){
-	    if (err) { throw err; }
-	    sails.log.debug(members);
-			Members.publish(req.socket, members);
-			res.send(members);
-  	});
+console.log('hello');		
 
-		res.view();
-  }
+		// res.view();
+	}
 
 };
 
