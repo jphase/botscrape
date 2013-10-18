@@ -8,25 +8,21 @@
 var MembersController = {
 
 	job: function(req, res) {
-		// Members.subscribe(req.socket);
-		// var something;
-		// // Find members with id passed
-		// Members.find()
-		// .where({ id: req.param('id') })
-		// .done(function(err, members) {
-		// 	if(err) { throw err; }
-		// 	sails.log.debug(members);
-		// 	Members.publish(req.socket, members);
-		// 	// res.send(members);
-		// });
+		Members.subscribe(req.socket);
+		// Find members with id passed
+		var something;
+		Members.find()
+		.where({ id: req.param('id') })
+		.done(function(err, members) {
+			if(err) { throw err; }
+			sails.log.debug(members);
+			something = members;
+			Members.publish(req.socket, members);
+		});
 
-setTimeout(function() {
-  console.log('world');
-}, 100);
-
-console.log('hello');		
-
-		// res.view();
+		res.send('this works');
+		// res.send(something);  // this doesn't work
+		res.view();
 	}
 
 };
