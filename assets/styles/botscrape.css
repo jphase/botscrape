@@ -1,0 +1,27 @@
+/* Logo breathing */
+	@-webkit-keyframes breathe {
+		0% {
+			opacity: 1;
+			-webkit-transform: scale(1);
+			-webkit-box-shadow: 0 0 30px rgba(0 0 0, 1);
+		}
+		50% {
+			opacity: .8;
+			-webkit-transform: scale(0.98);
+			-webkit-box-shadow: 0 0 5px rgba(0 0 0, 0.5);
+		}
+		100% {
+			opacity: 1;
+			-webkit-transform: scale(1);
+			-webkit-box-shadow: 0 0 30px rgba(0 0 0, 1);
+		}
+	}
+	#bglogo {
+		position: fixed;
+		top: 0;
+		right: 0;
+		-webkit-animation-name: breathe;
+		-webkit-animation-iteration-count: infinite;
+		-webkit-animation-duration: 1s;
+		-webkit-animation-timing-function: ease-in-out;
+	}

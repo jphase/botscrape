@@ -2,17 +2,19 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link rel="stylesheet" href="/styles/botscrape.css">
+	<title>Botscrape Sandbox</title>
 </head>
 <body>
-
-	<p><label>Member ID:</label> <%= members.id %></p>
-	<p><label>Member Type:</label> <%= members.type %></p>
-	<p><label>Member Email:</label> <%= members.email %></p>
-	<p><label>Created At</label> <%= members.createdAt %></p>
-	<p><label>Updated At</label> <%= members.updatedAt %></p>
+	<p><label>Bot ID:</label> <%= bot.id %></p>
+	<p><label>Bot URL:</label> <%= bot.url %></p>
+	<p><label>Bot Match:</label> <%= bot.match %></p>
+	<p><label>Created At</label> <%= bot.createdAt %></p>
+	<p><label>Updated At</label> <%= bot.updatedAt %></p>
+	<hr>
+	<p><label>Results:</label></p>
+	<p><%= results %></p>
 
 	<svg version="1.1" id="bglogo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 		 viewBox="0 0 612 792" enable-background="new 0 0 612 792" xml:space="preserve">
@@ -49,5 +51,6 @@
 	<path fill="#87837D" d="M361.873,528.422c0,5.533-4.484,10.008-10.008,10.008h-93.871c-5.525,0-10.007-4.475-10.007-10.008V400.148
 		c0-5.532,4.482-10.008,10.007-10.008h93.871c5.525,0,10.008,4.477,10.008,10.008V528.422z"/>
 	</svg>	
+
 </body>
 </html>
