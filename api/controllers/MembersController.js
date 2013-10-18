@@ -18,15 +18,11 @@ var MembersController = {
 			if(err) { throw err; }
 			// Publish
 			Members.publish(req.socket, members);
-			// Debug ftw
-			sails.log.debug(members);
-			console.log(members);
 			// Push to view kthxbye
 			res.view({
-				members: members
+				members: members[0]
 			});
 		});
-
 	}
 
 };
