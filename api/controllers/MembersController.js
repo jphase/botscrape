@@ -8,21 +8,25 @@
 var MembersController = {
 
 	job: function(req, res) {
+		// Subscribe
 		Members.subscribe(req.socket);
 		// Find members with id passed
-		var something;
 		Members.find()
 		.where({ id: req.param('id') })
 		.done(function(err, members) {
+			// Throw teh errorz
 			if(err) { throw err; }
-			sails.log.debug(members);
-			something = members;
+			// Publish
 			Members.publish(req.socket, members);
+			// Debug ftw
+			sails.log.debug(members);
+			console.log(members);
+			// Push to view kthxbye
+			res.view({
+				members: members
+			});
 		});
 
-		res.send('this works');
-		// res.send(something);  // this doesn't work
-		res.view();
 	}
 
 };
