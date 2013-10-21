@@ -9,12 +9,15 @@
 <body>
 	<p><label>Bot ID:</label> <%= bot.id %></p>
 	<p><label>Bot URL:</label> <%= bot.url %></p>
-	<p><label>Bot Match:</label> <%= bot.match %></p>
+	<p><label>Bot Match Element:</label> <%= bot.match_el %></p>
+	<p><label>Bot Match Parent:</label> <%= bot.match_parent %></p>
+	<p><label>Bot Match String:</label> <%= bot.match_string %></p>
+	<p><label>Bot Return Element:</label> <%= bot.return_el %></p>
 	<p><label>Created At</label> <%= bot.createdAt %></p>
 	<p><label>Updated At</label> <%= bot.updatedAt %></p>
 	<hr>
 	<p><label>Results:</label></p>
-	<p><%= results %></p>
+	<p id="results"><%= results %></p>
 
 	<svg version="1.1" id="bglogo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 		 viewBox="0 0 612 792" enable-background="new 0 0 612 792" xml:space="preserve">
@@ -52,5 +55,12 @@
 		c0-5.532,4.482-10.008,10.007-10.008h93.871c5.525,0,10.008,4.477,10.008,10.008V528.422z"/>
 	</svg>	
 
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script>
+	$(function() {
+		// $('#results').html($.parseHTML($('#results').text()));
+		//$('#results').html();
+	});
+	</script>
 </body>
 </html>

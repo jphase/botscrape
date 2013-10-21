@@ -12,7 +12,10 @@ module.exports = {
 	attributes: {
 		name: 'STRING',
 		url: 'STRING',
-		match: 'STRING'
+		match_string: 'STRING',
+		match_el: 'STRING',
+		match_parent: 'STRING',
+		return_el: 'STRING'
 	}
 
 };

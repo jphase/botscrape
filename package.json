@@ -10,7 +10,9 @@
     "ejs": "0.8.4",
     "optimist": "0.3.4",
     "sails-redis": "git://github.com/vanetix/sails-redis.git",
-    "mast": "0.0.25"
+    "mast": "0.0.25",
+    "cheerio": "~0.12.3",
+    "request": "~2.27.0"
   },
   "scripts": {
     "start": "node app.js",
