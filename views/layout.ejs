@@ -1,28 +1,18 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <!--
-        For demonstration purposes, the `title` is dynamically set here based on
-        your `sails.config.appName` to show that you can inject data into layouts
-        exactly the same way as with your other view templates.
-    -->
     <title><%- title %></title>
-
-    <!-- Viewport mobile tag for sensible mobile support -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-
     <!--
-
       Stylesheets
       ========================
 
       You can link any CSS, LESS, or image files in your `assets` directory
       as you would normally: using <link/> tags.
-      
     -->
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/styles/botscrape.css">
     <!--
-
       Support for LESS included by default
       ================================================
 
@@ -30,13 +20,9 @@
       located in the top-level of this Sails app.  If you run into issues with styles
       not reloading, check the Sails log output in your console for LESS compilation errors.
       If necessary, shut down and then lift your app again.
-      
     -->
-
   </head>
-
   <body>
-
     <!-- Include the view file for the current controller/route -->
     <%- body %>
 
@@ -100,5 +86,5 @@
 
     -->
 
-    </body>
+  </body>
 </html>

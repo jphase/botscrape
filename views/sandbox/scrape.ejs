@@ -1,17 +1,8 @@
-<!doctype html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<link rel="stylesheet" href="/styles/botscrape.css">
-	<title>Botscrape Sandbox</title>
-</head>
-<body>
 	<p><label>Bot ID:</label> <%= bot.id %></p>
-	<p><label>Bot URL:</label> <%= bot.url %></p>
+	<p><label>Bot URL:</label> <a href="<%= bot.url %>" target="_blank"><%= bot.url %></a></p>
 	<p><label>Bot Match Element:</label> <%= bot.match_el %></p>
 	<p><label>Bot Match Parent:</label> <%= bot.match_parent %></p>
-	<p><label>Bot Match String:</label> <%= bot.match_string %></p>
+	<p><label>Bot Match String:</label> <span style="color:red"><%= bot.match_string %></span></p>
 	<p><label>Bot Return Element:</label> <%= bot.return_el %></p>
 	<p><label>Created At</label> <%= bot.createdAt %></p>
 	<p><label>Updated At</label> <%= bot.updatedAt %></p>
@@ -58,7 +49,7 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script>
 	$(function() {
-		// $('#results').html($.parseHTML($('#results').text()));
+		$('#results').html($.parseHTML($('#results').text()));
 		//$('#results').html();
 	});
 	</script>
