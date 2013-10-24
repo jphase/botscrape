@@ -49,7 +49,7 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script>
 	$(function() {
-		$('#results').html($.parseHTML($('#results').text()));
+		$('#results').html($.parseHTML($('#results').text())).find('a').attr('target', '_blank');
 		//$('#results').html();
 	});
 	</script>

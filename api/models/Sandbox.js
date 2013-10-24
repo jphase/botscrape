@@ -15,7 +15,8 @@ module.exports = {
 		match_string: 'STRING',
 		match_el: 'STRING',
 		match_parent: 'STRING',
-		return_el: 'STRING'
+		return_el: 'STRING',
+		next_page_el: 'STRING'
 	}
 
 };

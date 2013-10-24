@@ -2,7 +2,7 @@
  * SandboxController
  *
  * @module		:: Controller
- * @description	:: Contains logic for handling requests.
+ * @description	:: Sandbox environment to test scraping external website content with cheerio, finding regex matches, returning filtered content within matches, and perform various cron operations based on data set in redis database.
  */
 
 module.exports = {
@@ -17,7 +17,22 @@ module.exports = {
 		var bot = {
 			matched: [],
 			domain: false,
-			links: true
+			linksfix: true,
+			recurse: true
+		}
+
+		// Recurse through matched elements
+		function recurse($, optz) {
+			sails.log.debug($);
+			// Check for recurse option
+			if(optz.recurse) {
+				// Check for a recursion element in $ (cheerio object param)
+				$.each(function(index, next) {
+					sails.log.debug(this.attr('href'));
+					var link = fixLinks(this.attr('href'), optz);
+					requestURL(link.attr('href'), optz);
+				});
+			}
 		}
 
 		// Escape all RegEx reserved characters from string - http://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex#6969486
@@ -26,7 +41,7 @@ module.exports = {
 		}
 
 		// Return content based on match values in database for matched values
-		function matchLine($, valz, optz) {
+		function matchContent($, valz, optz) {
 			// Create a regex based on the bot match string
 			var regex = new RegExp(escRegExp(valz.match_string), 'gim');
 			// Generate results based on regex matches within match_parent
@@ -41,24 +56,27 @@ module.exports = {
 						$(this).find(valz.return_el).each(function(index, child_el) {
 							// Push matches to results array
 							// sails.log.debug($(this).html());
-							results.push(filter($(this), optz));
+							results.push(fixLinks($(this), optz));
 						});
 						results.push('<br>');
-						// if(match.length) results.push(match);
 					}
 				});
+				// Recurse as needed
+				// recurse($(valz.next_page_el), optz);
 			}
 			return results;
 		}
 
-		// Filter matched elements
-		function filter($, optz) {
+		// Fix links that have relative URLs
+		function fixLinks($, optz) {
 			// Filter links
-			if(optz.links) {
+			if(optz.linksfix) {
 				$.find('a').each(function(index, a) {
-					// Add bot URL to relative links
-					if(!this.attr('href').indexOf(optz.domain) >= 0) {						
-						this.attr('href', optz.domain + this.attr('href'));
+					// Fix relative links by adding bot URL
+					if(!this.attr('href').indexOf(optz.domain) >= 0) {
+						var domain = optz.domain.split('/');
+						domain = domain[0] + '//' + domain[2];
+						this.attr('href', domain + this.attr('href'));
 					}
 				});
 			}
@@ -66,18 +84,33 @@ module.exports = {
 		}
 
 		// Render view after data is retrieved
-		var successCallback = function(bot, data) {
+		var successCallback = function(botz, data) {
 			res.view({
-				bot: bot,
+				bot: botz,
 				results: data.toString()
 			});
 		}
 
+		// Request URL
+		var requestURL = function(url, botz) {
+			// Request source from URL and match
+			request(url.replace(/\/$/, ''), function(error, response, html) {
+				if(!error && response.statusCode == 200) {
+					// Set $ as cheerio html DOM object from request URL
+					var $ = cheerio.load(html);
+					// Set bot matched content
+					bot.matched = matchContent($, botz, bot);
+					// Callback
+					successCallback(botz, bot.matched);
+				}
+			});
+		}
+
 		// Request data from URL and filter through match functions above
-		var requestURL = function(callback) {
+		var getBot = function(callback) {
 			// Subscribe
 			Sandbox.subscribe(req.socket);
-			// Find bots with id passed
+			// Find bots with id passed in request URL
 			Sandbox.find()
 			.where({ id: req.param('id') })
 			.done(function(err, sandbox) {
@@ -85,24 +118,15 @@ module.exports = {
 				if(err) { throw err; }
 				// Publish
 				Sandbox.publish(req.socket, sandbox);
-				// Request source from URL and match
-				request(sandbox[0].url, function(error, response, html) {
-					if(!error && response.statusCode == 200) {
-						// Set $ as cheerio html DOM object from request URL
-						var $ = cheerio.load(html);
-						// Set bot domain as url without trailing slash
-						bot.domain = sandbox[0].url.replace(/\/$/, '');
-						// Set bot matched content
-						bot.matched = matchLine($, sandbox[0], bot);
-						// Callback
-						successCallback(sandbox[0], bot.matched);
-					}
-				});
+				// Set bot domain as url without trailing slash
+				bot.domain = sandbox[0].url.replace(/\/$/, '');
+				// Request URL
+				requestURL(bot.domain, sandbox[0]);
 			});
 		}
 
-		// Call request function
-		requestURL(successCallback);
+		// Issue a request to the URL saved in the redis database for this bot
+		getBot(successCallback);
 	}
 
 };
