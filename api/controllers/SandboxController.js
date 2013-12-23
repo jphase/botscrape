@@ -22,16 +22,21 @@ module.exports = {
 		}
 
 		// Recurse through matched elements
-		function recurse($, optz) {
-			sails.log.debug($);
+		function recurse($, valz, optz) {
 			// Check for recurse option
 			if(optz.recurse) {
 				// Check for a recursion element in $ (cheerio object param)
-				$.each(function(index, next) {
-					sails.log.debug(this.attr('href'));
-					var link = fixLinks(this.attr('href'), optz);
-					requestURL(link.attr('href'), optz);
-				});
+				var link = fixLink($, optz);
+				if(link.length) {
+					sails.log.debug('recursing on link ' + link.attr('href'));
+					requestURL(link.attr('href'), valz, optz);
+				} else {
+					// Render the view when done recursing
+					successCallback(valz, bot.matched);
+				}
+			} else {
+				// Render the view
+				successCallback(valz, bot.matched);
 			}
 		}
 
@@ -51,34 +56,33 @@ module.exports = {
 				$(valz.match_el).each(function(index, element) {
 					// Match regex on current match_el
 					var match = $(this).text().match(regex);
-					if(match != 'undefined' && match != null) {
+					if(match != null) {
 						// Change match to content from return_el
 						$(this).find(valz.return_el).each(function(index, child_el) {
 							// Push matches to results array
 							// sails.log.debug($(this).html());
-							results.push(fixLinks($(this), optz));
+							$(this).find('a').each(function(i, v) {
+								results.push(fixLink($(this), optz));
+							});
 						});
 						results.push('<br>');
 					}
 				});
-				// Recurse as needed
-				// recurse($(valz.next_page_el), optz);
 			}
 			return results;
 		}
 
 		// Fix links that have relative URLs
-		function fixLinks($, optz) {
+		function fixLink($, optz) {
 			// Filter links
 			if(optz.linksfix) {
-				$.find('a').each(function(index, a) {
-					// Fix relative links by adding bot URL
-					if(!this.attr('href').indexOf(optz.domain) >= 0) {
-						var domain = optz.domain.split('/');
-						domain = domain[0] + '//' + domain[2];
-						this.attr('href', domain + this.attr('href'));
-					}
-				});
+				// Prepare domain
+				var domain = optz.domain.split('/');
+				domain = domain[0] + '//' + domain[2];
+				// Fix relative link by adding bot URL
+				if($.attr('href') !== undefined && !$.attr('href').indexOf(optz.domain) >= 0) {
+					$.attr('href', domain + $.attr('href'));
+				}
 			}
 			return $;
 		}
@@ -99,9 +103,11 @@ module.exports = {
 					// Set $ as cheerio html DOM object from request URL
 					var $ = cheerio.load(html);
 					// Set bot matched content
-					bot.matched = matchContent($, botz, bot);
+					bot.matched.push(matchContent($, botz, bot));
 					// Callback
-					successCallback(botz, bot.matched);
+					// successCallback(botz, bot.matched);
+					// Recurse as needed
+					if($(botz.match_el).length) recurse($(botz.next_page_el), botz, bot);
 				}
 			});
 		}
