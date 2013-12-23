@@ -60,7 +60,6 @@ module.exports = {
 						// Change match to content from return_el
 						$(this).find(valz.return_el).each(function(index, child_el) {
 							// Push matches to results array
-							// sails.log.debug($(this).html());
 							$(this).find('a').each(function(i, v) {
 								results.push(fixLink($(this), optz));
 							});
@@ -76,12 +75,25 @@ module.exports = {
 		function fixLink($, optz) {
 			// Filter links
 			if(optz.linksfix) {
-				// Prepare domain
-				var domain = optz.domain.split('/');
-				domain = domain[0] + '//' + domain[2];
+				// Rebuild URL
+				var domain = $.attr('href').split('/');
 				// Fix relative link by adding bot URL
 				if($.attr('href') !== undefined && !$.attr('href').indexOf(optz.domain) >= 0) {
-					$.attr('href', domain + $.attr('href'));
+					// Check for / at beginning of href
+					if($.attr('href').substring(0, 1).indexOf('/') > -1) {
+						// Add href to end of domain
+						$.attr('href', domain[0] + '//' + domain[2] + $.attr('href'));
+					} else {
+						// Build URL bits
+						var URL = '';
+						domain.forEach(function(bit, index) {
+							if(index < domain.length && bit !== undefined) URL += bit + '/';
+						});
+						// Strip off trailing / from URL
+						if(URL.slice(-1) == '/') URL = URL.substring(0, URL.length - 1);
+						// Fix href
+						$.attr('href', URL);
+					}
 				}
 			}
 			return $;
